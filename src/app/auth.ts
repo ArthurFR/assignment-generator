@@ -5,6 +5,14 @@ export const { handlers: { GET, POST }, auth, signIn } = NextAuth({
     providers: [
         GitHub({
             authorization: { params: { scope: "read:user user:email public_repo"}},
+            profile(profile) {
+                return {
+                  id: profile.id.toString(),
+                  name: profile.login,
+                  email: profile.email,
+                  image: profile.avatar_url,
+                }
+              }
         })
     ],
     callbacks: {
@@ -12,7 +20,6 @@ export const { handlers: { GET, POST }, auth, signIn } = NextAuth({
             if (account) {
               token.accessToken = account.access_token
             }
-            console.log('jwt', account)
             return token
         },
         async session({ session, token }) {
