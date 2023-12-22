@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server"
-import { auth } from "auth" 
+import { auth } from "auth"
 
 export async function POST() {
     const session = await auth()
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
 
     const body = JSON.stringify({
-        name: `assessments-${session.user?.name}`
+        name: `assessments-${session.user?.name}`,
+        auto_init: true,
     })
 
     try {

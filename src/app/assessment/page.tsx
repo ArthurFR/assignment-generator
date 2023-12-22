@@ -2,15 +2,19 @@
 import AssessmentForm, { AssessmentFormData } from "@/components/AssessmentForm"
 import Button from "@/components/Button"
 import H1 from "@/components/typography/H1"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default function Assessment() {
     const [assessmentMarkdown, setAssessmentMarkdown] = useState('')
+    const [assessmentName, setAssessmentName] = useState('')
     const [isGettingAssessment, setIsGettingAssessment] = useState(false)
+    const router = useRouter()
 
     const getAssessment = async (assessmentFormData: AssessmentFormData) => {
         setIsGettingAssessment(true)
         const body = JSON.stringify(assessmentFormData)
+        const assessmentTitle = `${assessmentFormData.level}-${assessmentFormData.position}-${assessmentFormData.title.replaceAll(' ', '-')}`
         try {
 
             const response = await fetch('api/llm/assessment', {
@@ -24,13 +28,27 @@ export default function Assessment() {
             const { assessment } = await response.json()
             setIsGettingAssessment(false)
             setAssessmentMarkdown(assessment)
+            setAssessmentName(assessmentTitle.toLowerCase())
         } catch (e: any) {
             throw(e)
         }
     }
 
     const saveAssessment = async () => {
-
+        const body = JSON.stringify({ assessment: assessmentMarkdown, name: assessmentName })
+        try {
+            await fetch('api/github/assessment', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body
+            })
+    
+            router.push('/dashboard')
+        } catch (e: any) {
+            throw(e)
+        }
     }
 
     return (
