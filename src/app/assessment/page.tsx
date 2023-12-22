@@ -1,5 +1,7 @@
 'use client'
 import AssessmentForm, { AssessmentFormData } from "@/components/AssessmentForm"
+import Button from "@/components/Button"
+import H1 from "@/components/typography/H1"
 import { useState } from "react"
 
 export default function Assessment() {
@@ -31,11 +33,11 @@ export default function Assessment() {
 
     }
 
-    const buttonStyle = 'rounded-lg py-2 px-3 bg-blue-800 mt-4 hover:bg-blue-900'
-
     return (
-        <main>
-            <div className="w-full flex h-screen justify-center items-center">
+        <main className="w-full h-[calc(100vh-56px)] px-12 pt-8">
+            <H1>Assessment</H1>
+
+            <div className="w-full flex h-5/6 justify-center mt-8">
                 {!isGettingAssessment && !assessmentMarkdown &&
                     <div className="w-full max-w-md p-4 bg-zinc-800 rounded-lg h-fit">
                         <AssessmentForm onSubmit={getAssessment} />
@@ -45,14 +47,14 @@ export default function Assessment() {
                 {isGettingAssessment && !assessmentMarkdown && <span>Creating assessment...</span>}
 
                 {assessmentMarkdown && (
-                    <div className="w-5/6 h-full p-8 ">
+                    <div className="w-5/6 h-full">
 
-                        <pre className="overflow-auto h-5/6 bg-zinc-800 rounded h-full">{assessmentMarkdown}</pre>
+                        <pre className="overflow-auto h-2/3 bg-zinc-800 rounded p-4">{assessmentMarkdown}</pre>
                         <div className="flex mt-4 justify-between">
-                            <button className={buttonStyle} onClick={() => {
+                            <Button onClick={() => {
                                 setAssessmentMarkdown('')
-                            }}>Cancel</button>
-                            <button className={buttonStyle} onClick={saveAssessment}>Save on Github</button>
+                            }}>Cancel</Button>
+                            <Button onClick={saveAssessment}>Save on Github</Button>
                         </div>
                     </div>
                 )}

@@ -1,5 +1,7 @@
-import clsx from "clsx";
+import clsx from "clsx"
 import { FormEvent } from "react"
+import Button from "./Button"
+import Link from "next/link"
 
 export interface AssessmentFormData {
     title: string,
@@ -35,7 +37,6 @@ export default function AssessmentForm({ onSubmit }: Props) {
 
     const labelStyle = 'flex flex-col mt-3'
     const formFieldStyle = 'border border-slate-500 rounded-lg p-1 px-3 bg-zinc-700 text-base'
-    const buttonStyle = 'rounded-lg py-2 px-3 bg-blue-800 mt-4 hover:bg-blue-900'
 
     return (
         <form onSubmit={onFormSubmit} className="flex flex-col w-full">
@@ -73,7 +74,12 @@ export default function AssessmentForm({ onSubmit }: Props) {
                 <textarea name="description" required className={clsx(formFieldStyle, 'resize-none')} rows={5}/>
             </label>
 
-            <button type="submit" className={buttonStyle}>Submit</button>
+            <div className="w-full flex gap-2">
+                <Link href="/dashboard" className="w-1/2">
+                    <Button className="w-full">Cancel</Button>
+                </Link>
+                <Button type="submit" className="w-1/2">Submit</Button>
+            </div>
         </form>
     )
 }
