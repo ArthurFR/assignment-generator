@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     try {
         const llm = new OpenAI({
             temperature: 1,
-            modelName: 'gpt-4-1106-preview'
+            modelName: 'gpt-3.5-turbo-0613'
         })
 
         const body = await req.json()
