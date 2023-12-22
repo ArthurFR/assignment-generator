@@ -1,9 +1,10 @@
 import { auth } from "auth"
+import Link from "next/link"
 import { redirect } from "next/navigation"
 
 export default async function Dasboard() {
     const session = await auth()
-    if (!session) redirect('/');
+    if (!session) redirect('/')
 
     const res = await fetch('https://api.github.com/user/repos', { method:'GET', headers: {
         Accept: 'application/vnd.github+json',
@@ -13,7 +14,10 @@ export default async function Dasboard() {
 
     return (
         <main>
-            Dashboard
+            <h1>Dashboard</h1>
+            <Link href="/assessment">
+                <button>Create Assessment</button>
+            </Link>
         </main>
     )
 }
