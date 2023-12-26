@@ -2,6 +2,7 @@
 import AssessmentForm, { AssessmentFormData } from "@/components/AssessmentForm"
 import Button from "@/components/Button"
 import H1 from "@/components/typography/H1"
+import H2 from "@/components/typography/H2"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -9,6 +10,7 @@ export default function Assessment() {
     const [assessmentMarkdown, setAssessmentMarkdown] = useState('')
     const [assessmentName, setAssessmentName] = useState('')
     const [isGettingAssessment, setIsGettingAssessment] = useState(false)
+    const [isError, setIsError] = useState(false)
     const router = useRouter()
 
     const getAssessment = async (assessmentFormData: AssessmentFormData) => {
@@ -30,6 +32,7 @@ export default function Assessment() {
             setAssessmentMarkdown(assessment)
             setAssessmentName(assessmentTitle.toLowerCase())
         } catch (e: any) {
+            setIsError(true)
             throw(e)
         }
     }
@@ -49,6 +52,24 @@ export default function Assessment() {
         } catch (e: any) {
             throw(e)
         }
+    }
+
+    if (isError) {
+        return (
+            <main className="w-full h-[calc(100vh-56px)] px-12 pt-8">
+                <H1>Assessment</H1>
+
+                <div className="w-full flex flex-col h-5/6 justify-center mt-8">
+                    <H2>An error happened while generating the assessment.</H2>
+                    <Button onClick={() => {
+                        setIsError(false)
+                        setIsGettingAssessment(false)
+                        setAssessmentMarkdown('')
+                        setAssessmentName('')
+                    }}>Try again</Button>
+                </div>
+            </main>
+        )
     }
 
     return (
